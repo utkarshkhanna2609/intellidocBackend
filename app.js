@@ -4,6 +4,8 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 
 const app = express();
+
+const port = process.env.PORT || 6400
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -49,8 +51,8 @@ app.post('/query', async (req, res) => {
     }
 });
 
-app.listen(5110, () => {
-    console.log('Server is running on http://localhost:5110');
+app.listen(port, () => {
+    console.log(`Server is running on ${port}`);
 });
 
 
