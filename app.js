@@ -8,6 +8,7 @@ const app = express();
 const port = process.env.PORT || 6400
 app.use(cors());
 app.use(bodyParser.json());
+const apiKey = process.env.OPENAI_API_KEY;
 
 let conversationHistory = '';
 
@@ -36,7 +37,7 @@ app.post('/query', async (req, res) => {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer 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',
+                    'Authorization': 'Bearer ' +apiKey,
                 },
             },
         );
@@ -46,9 +47,9 @@ app.post('/query', async (req, res) => {
 
         res.json({ response: assistantResponse });
     } catch (error) {
-        console.log(error.message+`utkarsh`);
-        res.status(500).json({ error: 'An error occurred while processing the request.' });
-    }
+      console.error(error); // Log the entire error object
+      console.log(error.message + ` utkarsh`); // Log the error message
+      res.status(500).json({ error: 'An error occurred while processing the request.' });}  
 });
 
 app.listen(port, () => {
