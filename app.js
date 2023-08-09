@@ -1,14 +1,15 @@
+require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
-const bodyParser = require('body-parser');
 
 const app = express();
 
-const port = process.env.PORT || 6400
+const port = process.env.PORT || 6400;
+const openaiApiKey = process.env.OPENAI_API_KEY; // Retrieve the API key from environment variables
+
 app.use(cors());
-app.use(bodyParser.json());
-const apiKey = process.env.OPENAI_API_KEY;
+app.use(express.json()); // Using Express built-in JSON parser
 
 let conversationHistory = '';
 
@@ -37,7 +38,7 @@ app.post('/query', async (req, res) => {
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' +apiKey,
+                    'Authorization': `Bearer ${openaiApiKey}`, // Use the retrieved API key
                 },
             },
         );
@@ -49,12 +50,10 @@ app.post('/query', async (req, res) => {
     } catch (error) {
       console.error(error); // Log the entire error object
       console.log(error.message + ` utkarsh`); // Log the error message
-      res.status(500).json({ error: 'An error occurred while processing the request.' });}  
+      res.status(500).json({ error: 'An error occurred while processing the request.' });
+    }
 });
 
 app.listen(port, () => {
     console.log(`Server is running on ${port}`);
 });
-
-
-///Users/utkarshkhanna/Documents/tantranshaBackend/NodeBackendDoc/node_modules/express/docbackend.js
